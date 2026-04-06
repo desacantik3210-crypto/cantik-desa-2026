@@ -6,12 +6,7 @@ interface Props {
   questionB: string;
   questionC: string;
   questionD: string;
-  data: {
-    a: string;
-    b: string;
-    c: string;
-    d: string;
-  };
+  data: Record<string, string>;
   onChange: (field: string, value: string) => void;
 }
 
