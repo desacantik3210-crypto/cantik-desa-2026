@@ -47,6 +47,12 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        "section-header": "hsl(var(--section-header))",
+        "form-number": "hsl(var(--form-number))",
+        "form-label": "hsl(var(--form-label))",
+        "step-active": "hsl(var(--step-active))",
+        "step-completed": "hsl(var(--step-completed))",
+        "step-inactive": "hsl(var(--step-inactive))",
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
