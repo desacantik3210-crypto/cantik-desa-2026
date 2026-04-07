@@ -13,6 +13,8 @@ import SectionX from "@/components/sections/SectionX";
 import SectionXI from "@/components/sections/SectionXI";
 import ThankYouPage from "@/components/sections/ThankYouPage";
 import { Button } from "@/components/ui/button";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 const SECTIONS = [
   { num: "I", title: "Pengenalan Tempat" },
@@ -58,6 +60,26 @@ const Index = () => {
       [section]: { ...prev[section], [field]: values },
     }));
   }, []);
+
+  const [saving, setSaving] = useState(false);
+
+  const handleSubmit = async () => {
+    setSaving(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("write-sheet", {
+        body: { formData, blockData, checkboxData },
+      });
+      if (error) throw error;
+      if (data?.error) throw new Error(data.error);
+      toast.success("Data berhasil disimpan ke spreadsheet!");
+      setSubmitted(true);
+    } catch (err: any) {
+      console.error("Save error:", err);
+      toast.error("Gagal menyimpan: " + (err.message || "Unknown error"));
+    } finally {
+      setSaving(false);
+    }
+  };
 
   const renderSection = () => {
     switch (currentSection) {
@@ -167,10 +189,11 @@ const Index = () => {
             </Button>
           ) : (
             <Button
-              onClick={() => setSubmitted(true)}
+              onClick={handleSubmit}
+              disabled={saving}
               className="gap-2 bg-accent text-accent-foreground hover:bg-accent/90"
             >
-              Simpan Kuesioner
+              {saving ? "Menyimpan..." : "Simpan Kuesioner"}
             </Button>
           )}
         </div>

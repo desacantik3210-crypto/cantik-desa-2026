@@ -41,6 +41,7 @@ interface RadioFieldProps {
   options: { value: string; label: string }[];
   value: string;
   onChange: (val: string) => void;
+  vertical?: boolean;
 }
 
 export const RadioField: React.FC<RadioFieldProps> = ({
@@ -49,11 +50,12 @@ export const RadioField: React.FC<RadioFieldProps> = ({
   options,
   value,
   onChange,
+  vertical = false,
 }) => (
   <div className="question-row">
     {number && <span className="question-number">{number}</span>}
     <label className="question-label">{label}</label>
-    <div className="flex flex-wrap gap-4">
+    <div className={vertical ? "flex flex-col gap-2 mt-1" : "flex flex-wrap gap-4"}>
       {options.map((opt) => (
         <label key={opt.value} className="radio-option">
           <input
