@@ -119,6 +119,7 @@ const SectionIV: React.FC<Props> = ({ data, onChange }) => (
         ]}
         value={data["405"] || ""}
         onChange={(v) => onChange("405", v)}
+        vertical
       />
     </div>
   </div>

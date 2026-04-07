@@ -69,8 +69,37 @@ const Index = () => {
   }, []);
 
   const [saving, setSaving] = useState(false);
+  const [validationErrors, setValidationErrors] = useState<string[]>([]);
+
+  const validateForm = (): string[] => {
+    const errors: string[] = [];
+    const requiredFields: Record<string, string> = {
+      "I_101": "[101] Provinsi",
+      "I_102": "[102] Kabupaten/Kota",
+      "I_104": "[104] Desa/Kelurahan",
+      "I_105": "[105] Status Daerah",
+      "IV_401": "[401] Topografi",
+      "IV_405": "[405] Sumber Penghasilan Utama",
+    };
+
+    Object.entries(requiredFields).forEach(([key, label]) => {
+      const [section, field] = key.split("_");
+      if (!formData[section]?.[field]) {
+        errors.push(label);
+      }
+    });
+
+    return errors;
+  };
 
   const handleSubmit = async () => {
+    const errors = validateForm();
+    if (errors.length > 0) {
+      setValidationErrors(errors);
+      toast.error(`Ada ${errors.length} field yang wajib diisi!`);
+      return;
+    }
+    setValidationErrors([]);
     setSaving(true);
     try {
       const { data, error } = await supabase.functions.invoke("write-sheet", {
@@ -195,13 +224,25 @@ const Index = () => {
               <ChevronRight className="w-4 h-4" />
             </Button>
           ) : (
-            <Button
-              onClick={handleSubmit}
-              disabled={saving}
-              className="gap-2 bg-accent text-accent-foreground hover:bg-accent/90"
-            >
-              {saving ? "Menyimpan..." : "Simpan Kuesioner"}
-            </Button>
+            <div className="w-full">
+              <Button
+                onClick={handleSubmit}
+                disabled={saving}
+                className="gap-2 bg-accent text-accent-foreground hover:bg-accent/90"
+              >
+                {saving ? "Menyimpan..." : "Simpan Kuesioner"}
+              </Button>
+              {validationErrors.length > 0 && (
+                <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-md">
+                  <h3 className="font-semibold text-red-900 mb-2">⚠ Kolom yang belum diisi (wajib):</h3>
+                  <ul className="space-y-1 text-sm text-red-800 ml-2">
+                    {validationErrors.map((error, idx) => (
+                      <li key={idx}>• {error}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
           )}
         </div>
       </main>
