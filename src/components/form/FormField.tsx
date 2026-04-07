@@ -144,11 +144,13 @@ export const TextAreaField: React.FC<TextAreaFieldProps> = ({
   onChange,
   placeholder = "",
 }) => (
-  <div className="question-row">
-    {number && <span className="question-number">{number}</span>}
-    <label className="question-label">{label}</label>
+  <div className="question-row md:grid-cols-1">
+    <div className="flex items-start gap-2">
+      {number && <span className="question-number">{number}</span>}
+      <label className="question-label">{label}</label>
+    </div>
     <textarea
-      className="form-input min-h-[80px]"
+      className="form-input min-h-[80px] mt-1"
       value={value}
       onChange={(e) => onChange(e.target.value)}
       placeholder={placeholder}
