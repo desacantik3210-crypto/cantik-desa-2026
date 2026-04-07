@@ -124,37 +124,126 @@ const Index = () => {
       },
       3: () => {
         // Section IV
-        const required: Record<string, string> = {
-          "IV_401": "[401] Topografi",
-          "IV_402a": "[402a] Jumlah Penduduk - Laki-laki",
-          "IV_402b": "[402b] Jumlah Penduduk - Perempuan",
-          "IV_405": "[405] Sumber Penghasilan Utama",
-        };
         const sectionErrors: string[] = [];
-        Object.entries(required).forEach(([key, label]) => {
-          const [section, field] = key.split("_");
-          if (!formData[section]?.[field]) sectionErrors.push(label);
+        
+        // 401: Topografi (required)
+        if (!formData["IV"]?.["401"]) {
+          sectionErrors.push("[401] Topografi");
+        }
+        
+        // 402: Jumlah Penduduk (all sub-fields required)
+        const pop402Fields = ["402a", "402b", "402c", "402d"];
+        pop402Fields.forEach((field) => {
+          if (!formData["IV"]?.[field]) {
+            const labels: Record<string, string> = {
+              "402a": "[402a] Jumlah Penduduk - Laki-laki",
+              "402b": "[402b] Jumlah Penduduk - Perempuan",
+              "402c": "[402c] Jumlah Keluarga",
+              "402d": "[402d] Keluarga Pertanian",
+            };
+            sectionErrors.push(labels[field]);
+          }
         });
+        
+        // 403: Fasilitas Pendidikan (all sub-fields required to have at least 0 or be filled)
+        const edu403Fields = ["403a", "403b", "403c", "403d", "403e"];
+        edu403Fields.forEach((field) => {
+          if (formData["IV"]?.[field] === undefined || formData["IV"]?.[field] === "") {
+            const labels: Record<string, string> = {
+              "403a": "[403a] Fasilitas - TK/RA/BA",
+              "403b": "[403b] Fasilitas - SD/sederajat",
+              "403c": "[403c] Fasilitas - SMP/sederajat",
+              "403d": "[403d] Fasilitas - SMA/sederajat",
+              "403e": "[403e] Fasilitas - Akademi/Perguruan Tinggi",
+            };
+            sectionErrors.push(labels[field]);
+          }
+        });
+        
+        // 404: Fasilitas Kesehatan (all sub-fields required)
+        const health404Fields = ["404a", "404b", "404c", "404d", "404e", "404f", "404g", "404h", "404i"];
+        health404Fields.forEach((field) => {
+          if (formData["IV"]?.[field] === undefined || formData["IV"]?.[field] === "") {
+            const labels: Record<string, string> = {
+              "404a": "[404a] Fasilitas - Rumah Sakit",
+              "404b": "[404b] Fasilitas - Puskesmas",
+              "404c": "[404c] Fasilitas - Puskesmas Pembantu",
+              "404d": "[404d] Fasilitas - Poliklinik",
+              "404e": "[404e] Fasilitas - Tempat praktik dokter",
+              "404f": "[404f] Fasilitas - Tempat praktik bidan",
+              "404g": "[404g] Fasilitas - Poskesdes",
+              "404h": "[404h] Fasilitas - Polindes",
+              "404i": "[404i] Fasilitas - Apotek",
+            };
+            sectionErrors.push(labels[field]);
+          }
+        });
+        
+        // 405: Sumber Penghasilan Utama (required)
+        if (!formData["IV"]?.["405"]) {
+          sectionErrors.push("[405] Sumber Penghasilan Utama");
+        }
+        
         return sectionErrors;
       },
       4: () => {
         // Section V
-        const required: Record<string, string> = {
-          "V_501a": "[501a] Penduduk Bekerja",
-          "V_501b": "[501b] Penduduk Tidak Bekerja",
-          "V_502a": "[502a] Pendidikan - Tidak tamat SD",
-          "V_502b": "[502b] Pendidikan - Tamat SD",
-          "V_502c": "[502c] Pendidikan - Tamat SMP",
-          "V_502d": "[502d] Pendidikan - Tamat SMA",
-          "V_502e": "[502e] Pendidikan - Tamat Akademi/PT",
-          "V_503a": "[503a] Bantuan - BPNT",
-          "V_503b": "[503b] Bantuan - PKH",
-        };
         const sectionErrors: string[] = [];
-        Object.entries(required).forEach(([key, label]) => {
-          const [section, field] = key.split("_");
-          if (!formData[section]?.[field]) sectionErrors.push(label);
+        
+        // 501: Status Pekerjaan (required)
+        if (!formData["V"]?.["501a"]) sectionErrors.push("[501a] Penduduk Bekerja");
+        if (!formData["V"]?.["501b"]) sectionErrors.push("[501b] Penduduk Tidak Bekerja");
+        
+        // 502: Pendidikan (all required)
+        const edu502Fields = ["502a", "502b", "502c", "502d", "502e"];
+        edu502Fields.forEach((field) => {
+          if (!formData["V"]?.[field]) {
+            const labels: Record<string, string> = {
+              "502a": "[502a] Tidak tamat SD",
+              "502b": "[502b] Tamat SD",
+              "502c": "[502c] Tamat SMP",
+              "502d": "[502d] Tamat SMA",
+              "502e": "[502e] Tamat Akademi/PT",
+            };
+            sectionErrors.push(labels[field]);
+          }
         });
+        
+        // 503: Bantuan Sosial (all required)
+        const social503Fields = ["503a", "503b", "503c", "503d", "503e", "503f", "503g", "503h"];
+        social503Fields.forEach((field) => {
+          if (!formData["V"]?.[field]) {
+            const labels: Record<string, string> = {
+              "503a": "[503a] Bantuan - BPNT",
+              "503b": "[503b] Bantuan - PKH",
+              "503c": "[503c] Bantuan - BLT Desa",
+              "503d": "[503d] Bantuan - Subsidi Listrik",
+              "503e": "[503e] Bantuan - Indonesia Pintar",
+              "503f": "[503f] Bantuan - BPJS PBI",
+              "503g": "[503g] Bantuan - Prov",
+              "503h": "[503h] Bantuan - Kab/Kota",
+            };
+            sectionErrors.push(labels[field]);
+          }
+        });
+        
+        // 504: Industri Kecil Menengah (all required)
+        const industry504Fields = ["504a", "504b", "504c", "504d", "504e", "504f", "504g"];
+        industry504Fields.forEach((field) => {
+          if (!formData["V"]?.[field]) {
+            const labels: Record<string, string> = {
+              "504a": "[504a] Industri - Makanan",
+              "504b": "[504b] Industri - Alat Rumah Tangga",
+              "504c": "[504c] Industri - Material Bahan",
+              "504d": "[504d] Industri - Alat Pertanian",
+              "504e": "[504e] Industri - Kerajinan",
+              "504f": "[504f] Industri - Rumah Makan",
+              "504g": "[504g] Industri - Lainnya",
+            };
+            sectionErrors.push(labels[field]);
+          }
+        });
+        
         return sectionErrors;
       },
       5: () => {
@@ -321,61 +410,149 @@ const Index = () => {
 
   const validateForm = (): string[] => {
     const errors: string[] = [];
-    const requiredFields: Record<string, string> = {
-      // Section I - Pengenalan Tempat
+    
+    // Section I
+    const required1: Record<string, string> = {
       "I_101": "[101] Provinsi",
       "I_102": "[102] Kabupaten/Kota",
       "I_103": "[103] Kecamatan",
       "I_104": "[104] Desa/Kelurahan",
       "I_105": "[105] Status Daerah",
-      // Section II - Keterangan Petugas
+    };
+    Object.entries(required1).forEach(([key, label]) => {
+      const [section, field] = key.split("_");
+      if (!formData[section]?.[field]) errors.push(label);
+    });
+
+    // Section II
+    const required2: Record<string, string> = {
       "II_201": "[201] Nama Petugas",
       "II_202": "[202] Jabatan Petugas",
       "II_203": "[203] Tanggal Kunjungan",
       "II_204": "[204] Tanda Tangan Petugas",
-      // Section III - Keterangan Narasumber
+    };
+    Object.entries(required2).forEach(([key, label]) => {
+      const [section, field] = key.split("_");
+      if (!formData[section]?.[field]) errors.push(label);
+    });
+
+    // Section III
+    const required3: Record<string, string> = {
       "III_301": "[301] Nama Narasumber",
       "III_302": "[302] Jabatan Narasumber",
       "III_303": "[303] Nomor HP/WA",
       "III_304": "[304] Tanda Tangan Narasumber",
-      // Section IV - Profil Desa/Kelurahan
-      "IV_401": "[401] Topografi",
-      "IV_402a": "[402a] Jumlah Penduduk - Laki-laki",
-      "IV_402b": "[402b] Jumlah Penduduk - Perempuan",
-      "IV_405": "[405] Sumber Penghasilan Utama",
-      // Section V - Kondisi Sosial Ekonomi
-      "V_501a": "[501a] Penduduk Bekerja",
-      "V_501b": "[501b] Penduduk Tidak Bekerja",
-      "V_502a": "[502a] Pendidikan - Tidak tamat SD",
-      "V_502b": "[502b] Pendidikan - Tamat SD",
-      "V_502c": "[502c] Pendidikan - Tamat SMP",
-      "V_502d": "[502d] Pendidikan - Tamat SMA",
-      "V_502e": "[502e] Pendidikan - Tamat Akademi/PT",
-      "V_503a": "[503a] Bantuan - BPNT",
-      "V_503b": "[503b] Bantuan - PKH",
-      // Section VIII - Aparatur Pemerintahan
+    };
+    Object.entries(required3).forEach(([key, label]) => {
+      const [section, field] = key.split("_");
+      if (!formData[section]?.[field]) errors.push(label);
+    });
+
+    // Section IV - with all sub-fields
+    if (!formData["IV"]?.["401"]) errors.push("[401] Topografi");
+    const pop402Fields = ["402a", "402b", "402c", "402d"];
+    pop402Fields.forEach((field) => {
+      if (!formData["IV"]?.[field]) {
+        const labels: Record<string, string> = {
+          "402a": "[402a] Jumlah Penduduk - Laki-laki",
+          "402b": "[402b] Jumlah Penduduk - Perempuan",
+          "402c": "[402c] Jumlah Keluarga",
+          "402d": "[402d] Keluarga Pertanian",
+        };
+        errors.push(labels[field]);
+      }
+    });
+    const edu403Fields = ["403a", "403b", "403c", "403d", "403e"];
+    edu403Fields.forEach((field) => {
+      if (formData["IV"]?.[field] === undefined || formData["IV"]?.[field] === "") {
+        const labels: Record<string, string> = {
+          "403a": "[403a] Fasilitas - TK/RA/BA",
+          "403b": "[403b] Fasilitas - SD/sederajat",
+          "403c": "[403c] Fasilitas - SMP/sederajat",
+          "403d": "[403d] Fasilitas - SMA/sederajat",
+          "403e": "[403e] Fasilitas - Akademi/Perguruan Tinggi",
+        };
+        errors.push(labels[field]);
+      }
+    });
+    const health404Fields = ["404a", "404b", "404c", "404d", "404e", "404f", "404g", "404h", "404i"];
+    health404Fields.forEach((field) => {
+      if (formData["IV"]?.[field] === undefined || formData["IV"]?.[field] === "") {
+        const labels: Record<string, string> = {
+          "404a": "[404a] Fasilitas - Rumah Sakit",
+          "404b": "[404b] Fasilitas - Puskesmas",
+          "404c": "[404c] Fasilitas - Puskesmas Pembantu",
+          "404d": "[404d] Fasilitas - Poliklinik",
+          "404e": "[404e] Fasilitas - Tempat praktik dokter",
+          "404f": "[404f] Fasilitas - Tempat praktik bidan",
+          "404g": "[404g] Fasilitas - Poskesdes",
+          "404h": "[404h] Fasilitas - Polindes",
+          "404i": "[404i] Fasilitas - Apotek",
+        };
+        errors.push(labels[field]);
+      }
+    });
+    if (!formData["IV"]?.["405"]) errors.push("[405] Sumber Penghasilan Utama");
+
+    // Section V - with all sub-fields
+    if (!formData["V"]?.["501a"]) errors.push("[501a] Penduduk Bekerja");
+    if (!formData["V"]?.["501b"]) errors.push("[501b] Penduduk Tidak Bekerja");
+    const edu502Fields = ["502a", "502b", "502c", "502d", "502e"];
+    edu502Fields.forEach((field) => {
+      if (!formData["V"]?.[field]) {
+        const labels: Record<string, string> = {
+          "502a": "[502a] Tidak tamat SD",
+          "502b": "[502b] Tamat SD",
+          "502c": "[502c] Tamat SMP",
+          "502d": "[502d] Tamat SMA",
+          "502e": "[502e] Tamat Akademi/PT",
+        };
+        errors.push(labels[field]);
+      }
+    });
+    const social503Fields = ["503a", "503b", "503c", "503d", "503e", "503f", "503g", "503h"];
+    social503Fields.forEach((field) => {
+      if (!formData["V"]?.[field]) {
+        const labels: Record<string, string> = {
+          "503a": "[503a] Bantuan - BPNT",
+          "503b": "[503b] Bantuan - PKH",
+          "503c": "[503c] Bantuan - BLT Desa",
+          "503d": "[503d] Bantuan - Subsidi Listrik",
+          "503e": "[503e] Bantuan - Indonesia Pintar",
+          "503f": "[503f] Bantuan - BPJS PBI",
+          "503g": "[503g] Bantuan - Prov",
+          "503h": "[503h] Bantuan - Kab/Kota",
+        };
+        errors.push(labels[field]);
+      }
+    });
+    const industry504Fields = ["504a", "504b", "504c", "504d", "504e", "504f", "504g"];
+    industry504Fields.forEach((field) => {
+      if (!formData["V"]?.[field]) {
+        const labels: Record<string, string> = {
+          "504a": "[504a] Industri - Makanan",
+          "504b": "[504b] Industri - Alat Rumah Tangga",
+          "504c": "[504c] Industri - Material Bahan",
+          "504d": "[504d] Industri - Alat Pertanian",
+          "504e": "[504e] Industri - Kerajinan",
+          "504f": "[504f] Industri - Rumah Makan",
+          "504g": "[504g] Industri - Lainnya",
+        };
+        errors.push(labels[field]);
+      }
+    });
+
+    // Section VIII
+    const required8: Record<string, string> = {
       "VIII_801a": "[801a] Jumlah Aparatur",
       "VIII_801b": "[801b] Aparatur - Komputer",
       "VIII_801c": "[801c] Aparatur - Olah Data",
       "VIII_801d": "[801d] Aparatur - Monografi",
       "VIII_801e": "[801e] Aparatur - IT/Website",
-      // Section X - Resume
-      "X_1001a": "[1001a] Resume 1001.a - Data untuk Program",
-      "X_1001b": "[1001b] Resume 1001.b - Kegiatan Statistik",
-      "X_1002a": "[1002a] Resume 1002.a - Pembinaan Pengelolaan Data",
-      "X_1002b": "[1002b] Resume 1002.b - Pembinaan Pengumpulan Data",
-      "X_1002c": "[1002c] Resume 1002.c - Pembinaan Analisis Data",
-      "X_1002d": "[1002d] Resume 1002.d - Pembinaan Penyajian Data",
-      "X_1002e": "[1002e] Resume 1002.e - Pembinaan Website/SID",
-      // Section XI - Catatan
-      "XI_catatan": "[XI] Catatan Tambahan",
     };
-
-    Object.entries(requiredFields).forEach(([key, label]) => {
+    Object.entries(required8).forEach(([key, label]) => {
       const [section, field] = key.split("_");
-      if (!formData[section]?.[field]) {
-        errors.push(label);
-      }
+      if (!formData[section]?.[field]) errors.push(label);
     });
 
     // Check SectionVI fields (Identifikasi Masalah - blocks 601-610)
@@ -454,6 +631,26 @@ const Index = () => {
     }
     if (!formData["IX"]?.["903f"]) {
       errors.push("[903f] Apakah desa membutuhkan data statistik up to date?");
+    }
+
+    // Section X - Resume
+    const required10: Record<string, string> = {
+      "X_1001a": "[1001a] Resume 1001.a - Data untuk Program",
+      "X_1001b": "[1001b] Resume 1001.b - Kegiatan Statistik",
+      "X_1002a": "[1002a] Resume 1002.a - Pembinaan Pengelolaan Data",
+      "X_1002b": "[1002b] Resume 1002.b - Pembinaan Pengumpulan Data",
+      "X_1002c": "[1002c] Resume 1002.c - Pembinaan Analisis Data",
+      "X_1002d": "[1002d] Resume 1002.d - Pembinaan Penyajian Data",
+      "X_1002e": "[1002e] Resume 1002.e - Pembinaan Website/SID",
+    };
+    Object.entries(required10).forEach(([key, label]) => {
+      const [section, field] = key.split("_");
+      if (!formData[section]?.[field]) errors.push(label);
+    });
+
+    // Section XI - Catatan
+    if (!formData["XI"]?.["catatan"]) {
+      errors.push("[XI] Catatan Tambahan");
     }
 
     return errors.sort();
