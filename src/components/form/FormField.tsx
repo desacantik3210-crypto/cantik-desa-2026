@@ -52,10 +52,12 @@ export const RadioField: React.FC<RadioFieldProps> = ({
   onChange,
   vertical = false,
 }) => (
-  <div className="question-row">
-    {number && <span className="question-number">{number}</span>}
-    <label className="question-label">{label}</label>
-    <div className={vertical ? "flex flex-col gap-2 mt-1" : "flex flex-wrap gap-4"}>
+  <div className="question-row md:grid-cols-1">
+    <div className="flex items-start gap-2">
+      {number && <span className="question-number">{number}</span>}
+      <label className="question-label">{label}</label>
+    </div>
+    <div className={vertical ? "flex flex-col gap-2 mt-1" : "flex flex-wrap gap-4 mt-1"}>
       {options.map((opt) => (
         <label key={opt.value} className="radio-option">
           <input
@@ -88,10 +90,12 @@ export const CheckboxField: React.FC<CheckboxFieldProps> = ({
   values,
   onChange,
 }) => (
-  <div className="question-row">
-    {number && <span className="question-number">{number}</span>}
-    <label className="question-label">{label}</label>
-    <div className="flex flex-col gap-2">
+  <div className="question-row md:grid-cols-1">
+    <div className="flex items-start gap-2">
+      {number && <span className="question-number">{number}</span>}
+      <label className="question-label">{label}</label>
+    </div>
+    <div className="flex flex-col gap-2 mt-1">
       {options.map((opt) => (
         <label key={opt.value} className="radio-option">
           <input
