@@ -71,6 +71,169 @@ const Index = () => {
   const [saving, setSaving] = useState(false);
   const [validationErrors, setValidationErrors] = useState<string[]>([]);
 
+  // Section-specific validation
+  const validateCurrentSection = (sectionIndex: number): string[] => {
+    const errors: string[] = [];
+
+    const sectionValidations: Record<number, () => string[]> = {
+      0: () => {
+        // Section I
+        const required: Record<string, string> = {
+          "I_101": "[101] Provinsi",
+          "I_102": "[102] Kabupaten/Kota",
+          "I_103": "[103] Kecamatan",
+          "I_104": "[104] Desa/Kelurahan",
+          "I_105": "[105] Status Daerah",
+        };
+        const sectionErrors: string[] = [];
+        Object.entries(required).forEach(([key, label]) => {
+          const [section, field] = key.split("_");
+          if (!formData[section]?.[field]) sectionErrors.push(label);
+        });
+        return sectionErrors;
+      },
+      1: () => {
+        // Section II
+        const required: Record<string, string> = {
+          "II_201": "[201] Nama Petugas",
+          "II_202": "[202] Jabatan Petugas",
+          "II_203": "[203] Tanggal Kunjungan",
+          "II_204": "[204] Tanda Tangan Petugas",
+        };
+        const sectionErrors: string[] = [];
+        Object.entries(required).forEach(([key, label]) => {
+          const [section, field] = key.split("_");
+          if (!formData[section]?.[field]) sectionErrors.push(label);
+        });
+        return sectionErrors;
+      },
+      2: () => {
+        // Section III
+        const required: Record<string, string> = {
+          "III_301": "[301] Nama Narasumber",
+          "III_302": "[302] Jabatan Narasumber",
+          "III_303": "[303] Nomor HP/WA",
+          "III_304": "[304] Tanda Tangan Narasumber",
+        };
+        const sectionErrors: string[] = [];
+        Object.entries(required).forEach(([key, label]) => {
+          const [section, field] = key.split("_");
+          if (!formData[section]?.[field]) sectionErrors.push(label);
+        });
+        return sectionErrors;
+      },
+      3: () => {
+        // Section IV
+        const required: Record<string, string> = {
+          "IV_401": "[401] Topografi",
+          "IV_402a": "[402a] Jumlah Penduduk - Laki-laki",
+          "IV_402b": "[402b] Jumlah Penduduk - Perempuan",
+          "IV_405": "[405] Sumber Penghasilan Utama",
+        };
+        const sectionErrors: string[] = [];
+        Object.entries(required).forEach(([key, label]) => {
+          const [section, field] = key.split("_");
+          if (!formData[section]?.[field]) sectionErrors.push(label);
+        });
+        return sectionErrors;
+      },
+      4: () => {
+        // Section V
+        const required: Record<string, string> = {
+          "V_501a": "[501a] Penduduk Bekerja",
+          "V_501b": "[501b] Penduduk Tidak Bekerja",
+          "V_502a": "[502a] Pendidikan - Tidak tamat SD",
+          "V_502b": "[502b] Pendidikan - Tamat SD",
+          "V_502c": "[502c] Pendidikan - Tamat SMP",
+          "V_502d": "[502d] Pendidikan - Tamat SMA",
+          "V_502e": "[502e] Pendidikan - Tamat Akademi/PT",
+          "V_503a": "[503a] Bantuan - BPNT",
+          "V_503b": "[503b] Bantuan - PKH",
+        };
+        const sectionErrors: string[] = [];
+        Object.entries(required).forEach(([key, label]) => {
+          const [section, field] = key.split("_");
+          if (!formData[section]?.[field]) sectionErrors.push(label);
+        });
+        return sectionErrors;
+      },
+      5: () => {
+        // Section VI - Identifikasi Masalah
+        const sectionErrors: string[] = [];
+        const blocks = ["601", "602", "603", "604", "605", "606", "607", "608", "609", "610"];
+        blocks.forEach((blockId) => {
+          if (!blockData["VI"]?.[blockId]?.["a"]) {
+            sectionErrors.push(`[VI.${blockId}] Pertanyaan Masalah - Bagian A`);
+          }
+        });
+        return sectionErrors;
+      },
+      6: () => {
+        // Section VII - Identifikasi Potensi
+        const sectionErrors: string[] = [];
+        const blocks = ["611", "612", "613"];
+        blocks.forEach((blockId) => {
+          if (!blockData["VII"]?.[blockId]?.["a"]) {
+            sectionErrors.push(`[VII.${blockId}] Pertanyaan Potensi - Bagian A`);
+          }
+        });
+        return sectionErrors;
+      },
+      7: () => {
+        // Section VIII
+        const required: Record<string, string> = {
+          "VIII_801a": "[801a] Jumlah Aparatur",
+          "VIII_801b": "[801b] Aparatur - Komputer",
+          "VIII_801c": "[801c] Aparatur - Olah Data",
+          "VIII_801d": "[801d] Aparatur - Monografi",
+          "VIII_801e": "[801e] Aparatur - IT/Website",
+        };
+        const sectionErrors: string[] = [];
+        Object.entries(required).forEach(([key, label]) => {
+          const [section, field] = key.split("_");
+          if (!formData[section]?.[field]) sectionErrors.push(label);
+        });
+        return sectionErrors;
+      },
+      8: () => {
+        // Section IX - no specific required fields for now
+        return [];
+      },
+      9: () => {
+        // Section X - Resume
+        const required: Record<string, string> = {
+          "X_1001a": "[1001a] Resume 1001.a - Data untuk Program",
+          "X_1001b": "[1001b] Resume 1001.b - Kegiatan Statistik",
+          "X_1002a": "[1002a] Resume 1002.a - Pembinaan Pengelolaan Data",
+          "X_1002b": "[1002b] Resume 1002.b - Pembinaan Pengumpulan Data",
+          "X_1002c": "[1002c] Resume 1002.c - Pembinaan Analisis Data",
+          "X_1002d": "[1002d] Resume 1002.d - Pembinaan Penyajian Data",
+          "X_1002e": "[1002e] Resume 1002.e - Pembinaan Website/SID",
+        };
+        const sectionErrors: string[] = [];
+        Object.entries(required).forEach(([key, label]) => {
+          const [section, field] = key.split("_");
+          if (!formData[section]?.[field]) sectionErrors.push(label);
+        });
+        return sectionErrors;
+      },
+      10: () => {
+        // Section XI - Catatan
+        const required: Record<string, string> = {
+          "XI_catatan": "[XI] Catatan Tambahan",
+        };
+        const sectionErrors: string[] = [];
+        Object.entries(required).forEach(([key, label]) => {
+          const [section, field] = key.split("_");
+          if (!formData[section]?.[field]) sectionErrors.push(label);
+        });
+        return sectionErrors;
+      },
+    };
+
+    return sectionValidations[sectionIndex]?.() || [];
+  };
+
   const validateForm = (): string[] => {
     const errors: string[] = [];
     const requiredFields: Record<string, string> = {
@@ -264,7 +427,10 @@ const Index = () => {
         <div className="flex justify-between mt-6 pb-8">
           <Button
             variant="outline"
-            onClick={() => setCurrentSection((p) => Math.max(0, p - 1))}
+            onClick={() => {
+              setValidationErrors([]);
+              setCurrentSection((p) => Math.max(0, p - 1));
+            }}
             disabled={currentSection === 0}
             className="gap-2"
           >
@@ -273,15 +439,36 @@ const Index = () => {
           </Button>
 
           {currentSection < SECTIONS.length - 1 ? (
-            <Button
-              onClick={() => setCurrentSection((p) => Math.min(SECTIONS.length - 1, p + 1))}
-              className="gap-2"
-            >
-              Selanjutnya
-              <ChevronRight className="w-4 h-4" />
-            </Button>
+            <div className="flex flex-col items-end gap-3">
+              <Button
+                onClick={() => {
+                  const errors = validateCurrentSection(currentSection);
+                  if (errors.length > 0) {
+                    setValidationErrors(errors);
+                    toast.error(`Ada ${errors.length} field wajib diisi pada bagian ini!`);
+                  } else {
+                    setValidationErrors([]);
+                    setCurrentSection((p) => Math.min(SECTIONS.length - 1, p + 1));
+                  }
+                }}
+                className="gap-2"
+              >
+                Selanjutnya
+                <ChevronRight className="w-4 h-4" />
+              </Button>
+              {validationErrors.length > 0 && (
+                <div className="w-full max-w-md p-4 bg-red-50 border border-red-200 rounded-md">
+                  <h3 className="font-semibold text-red-900 mb-2 text-sm">⚠ Kolom yang belum diisi (wajib):</h3>
+                  <ul className="space-y-1 text-xs text-red-800 ml-2">
+                    {validationErrors.map((error, idx) => (
+                      <li key={idx}>• {error}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
           ) : (
-            <div className="w-full">
+            <div className="flex flex-col items-end gap-3">
               <Button
                 onClick={handleSubmit}
                 disabled={saving}
@@ -290,9 +477,9 @@ const Index = () => {
                 {saving ? "Menyimpan..." : "Simpan Kuesioner"}
               </Button>
               {validationErrors.length > 0 && (
-                <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-md">
-                  <h3 className="font-semibold text-red-900 mb-2">⚠ Kolom yang belum diisi (wajib):</h3>
-                  <ul className="space-y-1 text-sm text-red-800 ml-2">
+                <div className="w-full max-w-md p-4 bg-red-50 border border-red-200 rounded-md">
+                  <h3 className="font-semibold text-red-900 mb-2 text-sm">⚠ Kolom yang belum diisi (wajib):</h3>
+                  <ul className="space-y-1 text-xs text-red-800 ml-2">
                     {validationErrors.map((error, idx) => (
                       <li key={idx}>• {error}</li>
                     ))}
