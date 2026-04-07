@@ -11,6 +11,7 @@ import SectionVIII from "@/components/sections/SectionVIII";
 import SectionIX from "@/components/sections/SectionIX";
 import SectionX from "@/components/sections/SectionX";
 import SectionXI from "@/components/sections/SectionXI";
+import ThankYouPage from "@/components/sections/ThankYouPage";
 import { Button } from "@/components/ui/button";
 
 const SECTIONS = [
