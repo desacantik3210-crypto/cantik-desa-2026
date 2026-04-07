@@ -30,6 +30,7 @@ const SECTIONS = [
 
 const Index = () => {
   const [currentSection, setCurrentSection] = useState(0);
+  const [submitted, setSubmitted] = useState(false);
   const [formData, setFormData] = useState<Record<string, Record<string, string>>>({});
   const [blockData, setBlockData] = useState<Record<string, Record<string, Record<string, string>>>>({});
   const [checkboxData, setCheckboxData] = useState<Record<string, Record<string, string[]>>>({});
