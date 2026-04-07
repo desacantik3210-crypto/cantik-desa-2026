@@ -76,6 +76,24 @@ const Index = () => {
     }
   };
 
+  if (submitted) {
+    return (
+      <ThankYouPage
+        formData={formData}
+        blockData={blockData}
+        checkboxData={checkboxData}
+        onEdit={() => setSubmitted(false)}
+        onNewEntry={() => {
+          setFormData({});
+          setBlockData({});
+          setCheckboxData({});
+          setCurrentSection(0);
+          setSubmitted(false);
+        }}
+      />
+    );
+  }
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
