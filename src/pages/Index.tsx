@@ -77,6 +77,7 @@ const Index = () => {
       // Section I - Pengenalan Tempat
       "I_101": "[101] Provinsi",
       "I_102": "[102] Kabupaten/Kota",
+      "I_103": "[103] Kecamatan",
       "I_104": "[104] Desa/Kelurahan",
       "I_105": "[105] Status Daerah",
       // Section II - Keterangan Petugas
@@ -94,6 +95,32 @@ const Index = () => {
       "IV_402a": "[402a] Jumlah Penduduk - Laki-laki",
       "IV_402b": "[402b] Jumlah Penduduk - Perempuan",
       "IV_405": "[405] Sumber Penghasilan Utama",
+      // Section V - Kondisi Sosial Ekonomi
+      "V_501a": "[501a] Penduduk Bekerja",
+      "V_501b": "[501b] Penduduk Tidak Bekerja",
+      "V_502a": "[502a] Pendidikan - Tidak tamat SD",
+      "V_502b": "[502b] Pendidikan - Tamat SD",
+      "V_502c": "[502c] Pendidikan - Tamat SMP",
+      "V_502d": "[502d] Pendidikan - Tamat SMA",
+      "V_502e": "[502e] Pendidikan - Tamat Akademi/PT",
+      "V_503a": "[503a] Bantuan - BPNT",
+      "V_503b": "[503b] Bantuan - PKH",
+      // Section VIII - Aparatur Pemerintahan
+      "VIII_801a": "[801a] Jumlah Aparatur",
+      "VIII_801b": "[801b] Aparatur - Komputer",
+      "VIII_801c": "[801c] Aparatur - Olah Data",
+      "VIII_801d": "[801d] Aparatur - Monografi",
+      "VIII_801e": "[801e] Aparatur - IT/Website",
+      // Section X - Resume
+      "X_1001a": "[1001a] Resume 1001.a - Data untuk Program",
+      "X_1001b": "[1001b] Resume 1001.b - Kegiatan Statistik",
+      "X_1002a": "[1002a] Resume 1002.a - Pembinaan Pengelolaan Data",
+      "X_1002b": "[1002b] Resume 1002.b - Pembinaan Pengumpulan Data",
+      "X_1002c": "[1002c] Resume 1002.c - Pembinaan Analisis Data",
+      "X_1002d": "[1002d] Resume 1002.d - Pembinaan Penyajian Data",
+      "X_1002e": "[1002e] Resume 1002.e - Pembinaan Website/SID",
+      // Section XI - Catatan
+      "XI_catatan": "[XI] Catatan Tambahan",
     };
 
     Object.entries(requiredFields).forEach(([key, label]) => {
@@ -103,7 +130,23 @@ const Index = () => {
       }
     });
 
-    return errors;
+    // Check SectionVI fields (Identifikasi Masalah - blocks 601-610)
+    const section6Blocks = ["601", "602", "603", "604", "605", "606", "607", "608", "609", "610"];
+    section6Blocks.forEach((blockId) => {
+      if (!blockData["VI"]?.[blockId]?.["a"]) {
+        errors.push(`[VI.${blockId}] Pertanyaan Masalah - Bagian A`);
+      }
+    });
+
+    // Check SectionVII fields (Potensi - blocks 611-613)
+    const section7Blocks = ["611", "612", "613"];
+    section7Blocks.forEach((blockId) => {
+      if (!blockData["VII"]?.[blockId]?.["a"]) {
+        errors.push(`[VII.${blockId}] Pertanyaan Potensi - Bagian A`);
+      }
+    });
+
+    return errors.sort();
   };
 
   const handleSubmit = async () => {
