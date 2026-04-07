@@ -30,7 +30,7 @@ const SectionX: React.FC<Props> = ({ data, onChange }) => (
 
       <div className="px-4 md:px-6 py-3">
         <p className="question-number mb-3">1002</p>
-        <div className="space-y-3">
+        <div className="space-y-4">
           {[
             { key: "1002a", label: "a. Apakah pembinaan yang akan dilakukan, akan ada kegiatan pembinaan pengelolaan data?" },
             { key: "1002b", label: "b. Apakah pembinaan yang akan dilakukan, akan ada kegiatan pembinaan pengumpulan/pemutakhiran data?" },
@@ -48,6 +48,7 @@ const SectionX: React.FC<Props> = ({ data, onChange }) => (
               ]}
               value={data[item.key] || ""}
               onChange={(v) => onChange(item.key, v)}
+              vertical
             />
           ))}
         </div>
