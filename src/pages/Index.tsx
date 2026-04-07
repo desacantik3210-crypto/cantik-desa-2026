@@ -74,11 +74,25 @@ const Index = () => {
   const validateForm = (): string[] => {
     const errors: string[] = [];
     const requiredFields: Record<string, string> = {
+      // Section I - Pengenalan Tempat
       "I_101": "[101] Provinsi",
       "I_102": "[102] Kabupaten/Kota",
       "I_104": "[104] Desa/Kelurahan",
       "I_105": "[105] Status Daerah",
+      // Section II - Keterangan Petugas
+      "II_201": "[201] Nama Petugas",
+      "II_202": "[202] Jabatan Petugas",
+      "II_203": "[203] Tanggal Kunjungan",
+      "II_204": "[204] Tanda Tangan Petugas",
+      // Section III - Keterangan Narasumber
+      "III_301": "[301] Nama Narasumber",
+      "III_302": "[302] Jabatan Narasumber",
+      "III_303": "[303] Nomor HP/WA",
+      "III_304": "[304] Tanda Tangan Narasumber",
+      // Section IV - Profil Desa/Kelurahan
       "IV_401": "[401] Topografi",
+      "IV_402a": "[402a] Jumlah Penduduk - Laki-laki",
+      "IV_402b": "[402b] Jumlah Penduduk - Perempuan",
       "IV_405": "[405] Sumber Penghasilan Utama",
     };
 
