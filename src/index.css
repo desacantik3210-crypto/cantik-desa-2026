@@ -1,0 +1,105 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 210 20% 97%;
+    --foreground: 215 25% 15%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 215 25% 15%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 215 25% 15%;
+
+    --primary: 211 70% 35%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 210 30% 92%;
+    --secondary-foreground: 215 25% 15%;
+
+    --muted: 210 20% 94%;
+    --muted-foreground: 215 15% 50%;
+
+    --accent: 175 60% 35%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214 20% 88%;
+    --input: 214 20% 88%;
+    --ring: 211 70% 35%;
+
+    --radius: 0.5rem;
+
+    --section-header: 211 70% 35%;
+    --section-header-foreground: 0 0% 100%;
+    --form-label: 215 25% 25%;
+    --form-number: 211 70% 35%;
+    --step-active: 211 70% 35%;
+    --step-completed: 175 60% 35%;
+    --step-inactive: 210 15% 75%;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Inter', sans-serif;
+  }
+}
+
+@layer components {
+  .section-header {
+    @apply bg-primary text-primary-foreground px-6 py-3 rounded-t-lg font-semibold text-lg;
+  }
+
+  .form-card {
+    @apply bg-card rounded-lg shadow-sm border border-border overflow-hidden;
+  }
+
+  .question-row {
+    @apply grid grid-cols-1 md:grid-cols-[auto_1fr_1fr] gap-2 md:gap-4 items-start py-3 px-4 md:px-6 border-b border-border last:border-b-0;
+  }
+
+  .question-row-stack {
+    @apply grid grid-cols-1 gap-2 items-start py-3 px-4 md:px-6 border-b border-border last:border-b-0;
+  }
+
+  .question-number {
+    @apply font-semibold text-primary min-w-[2rem];
+  }
+
+  .question-label {
+    @apply text-sm font-medium text-foreground;
+  }
+
+  .form-input {
+    @apply w-full border border-input rounded-md px-3 py-2 text-sm bg-card focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-colors;
+  }
+
+  .radio-option {
+    @apply flex items-center gap-2 text-sm cursor-pointer;
+  }
+
+  .step-button {
+    @apply flex flex-col items-center gap-1 cursor-pointer transition-all;
+  }
+}
