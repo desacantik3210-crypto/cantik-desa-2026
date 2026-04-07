@@ -189,10 +189,11 @@ const Index = () => {
             </Button>
           ) : (
             <Button
-              onClick={() => setSubmitted(true)}
+              onClick={handleSubmit}
+              disabled={saving}
               className="gap-2 bg-accent text-accent-foreground hover:bg-accent/90"
             >
-              Simpan Kuesioner
+              {saving ? "Menyimpan..." : "Simpan Kuesioner"}
             </Button>
           )}
         </div>
