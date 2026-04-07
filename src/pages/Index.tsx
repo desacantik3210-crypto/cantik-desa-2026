@@ -13,6 +13,8 @@ import SectionX from "@/components/sections/SectionX";
 import SectionXI from "@/components/sections/SectionXI";
 import ThankYouPage from "@/components/sections/ThankYouPage";
 import { Button } from "@/components/ui/button";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 const SECTIONS = [
   { num: "I", title: "Pengenalan Tempat" },
