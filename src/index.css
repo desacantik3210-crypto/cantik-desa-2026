@@ -79,10 +79,6 @@
     @apply grid grid-cols-1 md:grid-cols-[auto_1fr_1fr] gap-2 md:gap-4 items-start py-3 px-4 md:px-6 border-b border-border last:border-b-0;
   }
 
-  .question-row-stack {
-    @apply grid grid-cols-1 gap-2 items-start py-3 px-4 md:px-6 border-b border-border last:border-b-0;
-  }
-
   .question-number {
     @apply font-semibold text-primary min-w-[2rem];
   }

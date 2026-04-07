@@ -22,7 +22,6 @@ const SectionIX: React.FC<Props> = ({ data, dataCheckbox, onChange, onChangeChec
         ]}
         values={dataCheckbox["901"] || []}
         onChange={(v) => onChangeCheckbox("901", v)}
-        stack
       />
 
       <div className="px-4 md:px-6 py-3">

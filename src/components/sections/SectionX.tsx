@@ -18,14 +18,12 @@ const SectionX: React.FC<Props> = ({ data, onChange }) => (
             label="a. Berdasarkan hasil identifikasi masalah desa/kelurahan yang sudah dilakukan, data apa saja yang dibutuhkan untuk menyusun program di desa/kelurahan?"
             value={data["1001a"] || ""}
             onChange={(v) => onChange("1001a", v)}
-            stack
           />
           <TextAreaField
             number=""
             label="b. Kegiatan statistik apa yang dibutuhkan oleh desa/kelurahan untuk mendapatkan pendampingan BPS Kabupaten/Kota?"
             value={data["1001b"] || ""}
             onChange={(v) => onChange("1001b", v)}
-            stack
           />
         </div>
       </div>
