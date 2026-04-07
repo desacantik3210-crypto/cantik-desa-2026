@@ -61,6 +61,26 @@ const Index = () => {
     }));
   }, []);
 
+  const [saving, setSaving] = useState(false);
+
+  const handleSubmit = async () => {
+    setSaving(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("write-sheet", {
+        body: { formData, blockData, checkboxData },
+      });
+      if (error) throw error;
+      if (data?.error) throw new Error(data.error);
+      toast.success("Data berhasil disimpan ke spreadsheet!");
+      setSubmitted(true);
+    } catch (err: any) {
+      console.error("Save error:", err);
+      toast.error("Gagal menyimpan: " + (err.message || "Unknown error"));
+    } finally {
+      setSaving(false);
+    }
+  };
+
   const renderSection = () => {
     switch (currentSection) {
       case 0: return <SectionI data={formData["I"] || {}} onChange={(f, v) => updateField("I", f, v)} />;
