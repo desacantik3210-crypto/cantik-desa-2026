@@ -149,7 +149,7 @@ const Index = () => {
             </Button>
           ) : (
             <Button
-              onClick={() => alert("Data kuesioner berhasil disimpan!")}
+              onClick={() => setSubmitted(true)}
               className="gap-2 bg-accent text-accent-foreground hover:bg-accent/90"
             >
               Simpan Kuesioner
