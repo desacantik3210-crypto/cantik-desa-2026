@@ -226,8 +226,63 @@ const Index = () => {
         return sectionErrors;
       },
       8: () => {
-        // Section IX - no specific required fields for now
-        return [];
+        // Section IX - Infrastruktur TI
+        const sectionErrors: string[] = [];
+        
+        // 901: Checkbox - at least one should be selected (optional for now, user can continue)
+        // No validation needed if empty
+        
+        // 902: Monografi/Profil Desa
+        if (!formData["IX"]?.["902a"]) {
+          sectionErrors.push("[902a] Apakah ada monografi/profil desa?");
+        } else if (formData["IX"]["902a"] === "1") {
+          // If a = "1" (Ada), then b is required
+          if (!formData["IX"]?.["902b"]) {
+            sectionErrors.push("[902b] Apakah monografi up to date?");
+          } else if (formData["IX"]["902b"] === "2") {
+            // If b = "2" (Tidak), then c is required
+            if (!formData["IX"]?.["902c"]) {
+              sectionErrors.push("[902c] Apa penyebabnya tidak up to date?");
+            }
+          }
+        }
+        
+        // 902d: visible if a = "2" or b !== undefined (always show if a has value)
+        if (formData["IX"]["902a"] === "2" || formData["IX"]?.["902b"] !== undefined) {
+          if (!formData["IX"]?.["902d"]) {
+            sectionErrors.push("[902d] Apakah perlu membuat monografi desa?");
+          }
+        }
+        
+        // 903: SID/Website Desa
+        if (!formData["IX"]?.["903a"]) {
+          sectionErrors.push("[903a] Apakah ada SID/Website Desa?");
+        } else if (formData["IX"]["903a"] === "1") {
+          // If a = "1", then b and c are required
+          if (!formData["IX"]?.["903b"]) {
+            sectionErrors.push("[903b] Apa alamat website-nya?");
+          }
+          if (!formData["IX"]?.["903c"]) {
+            sectionErrors.push("[903c] Apakah terdapat data statistik pada SID?");
+          } else if (formData["IX"]["903c"] === "1") {
+            // If c = "1" (ada data statistik), then d is required
+            if (!formData["IX"]?.["903d"]) {
+              sectionErrors.push("[903d] Apakah data statistik up to date?");
+            } else if (formData["IX"]["903d"] === "2") {
+              // If d = "2" (tidak up to date), then e is required
+              if (!formData["IX"]?.["903e"]) {
+                sectionErrors.push("[903e] Apa penyebabnya data tidak up to date?");
+              }
+            }
+          }
+        }
+        
+        // 903f: Always required
+        if (!formData["IX"]?.["903f"]) {
+          sectionErrors.push("[903f] Apakah desa membutuhkan data statistik up to date?");
+        }
+        
+        return sectionErrors;
       },
       9: () => {
         // Section X - Resume
@@ -360,6 +415,46 @@ const Index = () => {
         errors.push(`[VII.${blockId}] Pertanyaan D`);
       }
     });
+
+    // Check Section IX fields (Infrastruktur TI - conditional)
+    if (!formData["IX"]?.["902a"]) {
+      errors.push("[902a] Apakah ada monografi/profil desa?");
+    } else if (formData["IX"]["902a"] === "1") {
+      if (!formData["IX"]?.["902b"]) {
+        errors.push("[902b] Apakah monografi up to date?");
+      } else if (formData["IX"]["902b"] === "2") {
+        if (!formData["IX"]?.["902c"]) {
+          errors.push("[902c] Apa penyebabnya tidak up to date?");
+        }
+      }
+    }
+    if (formData["IX"]["902a"] === "2" || formData["IX"]?.["902b"] !== undefined) {
+      if (!formData["IX"]?.["902d"]) {
+        errors.push("[902d] Apakah perlu membuat monografi desa?");
+      }
+    }
+    
+    if (!formData["IX"]?.["903a"]) {
+      errors.push("[903a] Apakah ada SID/Website Desa?");
+    } else if (formData["IX"]["903a"] === "1") {
+      if (!formData["IX"]?.["903b"]) {
+        errors.push("[903b] Apa alamat website-nya?");
+      }
+      if (!formData["IX"]?.["903c"]) {
+        errors.push("[903c] Apakah terdapat data statistik pada SID?");
+      } else if (formData["IX"]["903c"] === "1") {
+        if (!formData["IX"]?.["903d"]) {
+          errors.push("[903d] Apakah data statistik up to date?");
+        } else if (formData["IX"]["903d"] === "2") {
+          if (!formData["IX"]?.["903e"]) {
+            errors.push("[903e] Apa penyebabnya data tidak up to date?");
+          }
+        }
+      }
+    }
+    if (!formData["IX"]?.["903f"]) {
+      errors.push("[903f] Apakah desa membutuhkan data statistik up to date?");
+    }
 
     return errors.sort();
   };
