@@ -11,6 +11,7 @@ import SectionVIII from "@/components/sections/SectionVIII";
 import SectionIX from "@/components/sections/SectionIX";
 import SectionX from "@/components/sections/SectionX";
 import SectionXI from "@/components/sections/SectionXI";
+import ThankYouPage from "@/components/sections/ThankYouPage";
 import { Button } from "@/components/ui/button";
 
 const SECTIONS = [
@@ -29,6 +30,7 @@ const SECTIONS = [
 
 const Index = () => {
   const [currentSection, setCurrentSection] = useState(0);
+  const [submitted, setSubmitted] = useState(false);
   const [formData, setFormData] = useState<Record<string, Record<string, string>>>({});
   const [blockData, setBlockData] = useState<Record<string, Record<string, Record<string, string>>>>({});
   const [checkboxData, setCheckboxData] = useState<Record<string, Record<string, string[]>>>({});
@@ -73,6 +75,24 @@ const Index = () => {
       default: return null;
     }
   };
+
+  if (submitted) {
+    return (
+      <ThankYouPage
+        formData={formData}
+        blockData={blockData}
+        checkboxData={checkboxData}
+        onEdit={() => setSubmitted(false)}
+        onNewEntry={() => {
+          setFormData({});
+          setBlockData({});
+          setCheckboxData({});
+          setCurrentSection(0);
+          setSubmitted(false);
+        }}
+      />
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -147,7 +167,7 @@ const Index = () => {
             </Button>
           ) : (
             <Button
-              onClick={() => alert("Data kuesioner berhasil disimpan!")}
+              onClick={() => setSubmitted(true)}
               className="gap-2 bg-accent text-accent-foreground hover:bg-accent/90"
             >
               Simpan Kuesioner
