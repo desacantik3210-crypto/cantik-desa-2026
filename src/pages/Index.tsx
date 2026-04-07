@@ -162,8 +162,23 @@ const Index = () => {
         const sectionErrors: string[] = [];
         const blocks = ["601", "602", "603", "604", "605", "606", "607", "608", "609", "610"];
         blocks.forEach((blockId) => {
-          if (!blockData["VI"]?.[blockId]?.["a"]) {
-            sectionErrors.push(`[VI.${blockId}] Pertanyaan Masalah - Bagian A`);
+          const blockData_section = blockData["VI"]?.[blockId];
+          // Field a is always required
+          if (!blockData_section?.["a"]) {
+            sectionErrors.push(`[VI.${blockId}] Pertanyaan A`);
+          }
+          // If a === "1" (Ada), then b is required
+          if (blockData_section?.["a"] === "1" && !blockData_section?.["b"]) {
+            sectionErrors.push(`[VI.${blockId}] Pertanyaan B`);
+          }
+          // If a === "1" and b === "1", then c is required
+          if (blockData_section?.["a"] === "1" && blockData_section?.["b"] === "1" && !blockData_section?.["c"]) {
+            sectionErrors.push(`[VI.${blockId}] Pertanyaan C`);
+          }
+          // If d is visible, it's required: a === "3" OR b === "2" OR (b === "1" && c !== "")
+          const showD = blockData_section?.["a"] === "3" || blockData_section?.["b"] === "2" || (blockData_section?.["b"] === "1" && blockData_section?.["c"]);
+          if (showD && !blockData_section?.["d"]) {
+            sectionErrors.push(`[VI.${blockId}] Pertanyaan D`);
           }
         });
         return sectionErrors;
@@ -173,8 +188,23 @@ const Index = () => {
         const sectionErrors: string[] = [];
         const blocks = ["611", "612", "613"];
         blocks.forEach((blockId) => {
-          if (!blockData["VII"]?.[blockId]?.["a"]) {
-            sectionErrors.push(`[VII.${blockId}] Pertanyaan Potensi - Bagian A`);
+          const blockData_section = blockData["VII"]?.[blockId];
+          // Field a is always required
+          if (!blockData_section?.["a"]) {
+            sectionErrors.push(`[VII.${blockId}] Pertanyaan A`);
+          }
+          // If a === "1" (Ada), then b is required
+          if (blockData_section?.["a"] === "1" && !blockData_section?.["b"]) {
+            sectionErrors.push(`[VII.${blockId}] Pertanyaan B`);
+          }
+          // If a === "1" and b === "1", then c is required
+          if (blockData_section?.["a"] === "1" && blockData_section?.["b"] === "1" && !blockData_section?.["c"]) {
+            sectionErrors.push(`[VII.${blockId}] Pertanyaan C`);
+          }
+          // If d is visible, it's required: a === "3" OR b === "2" OR (b === "1" && c !== "")
+          const showD = blockData_section?.["a"] === "3" || blockData_section?.["b"] === "2" || (blockData_section?.["b"] === "1" && blockData_section?.["c"]);
+          if (showD && !blockData_section?.["d"]) {
+            sectionErrors.push(`[VII.${blockId}] Pertanyaan D`);
           }
         });
         return sectionErrors;
@@ -296,16 +326,38 @@ const Index = () => {
     // Check SectionVI fields (Identifikasi Masalah - blocks 601-610)
     const section6Blocks = ["601", "602", "603", "604", "605", "606", "607", "608", "609", "610"];
     section6Blocks.forEach((blockId) => {
-      if (!blockData["VI"]?.[blockId]?.["a"]) {
-        errors.push(`[VI.${blockId}] Pertanyaan Masalah - Bagian A`);
+      const blockData_section = blockData["VI"]?.[blockId];
+      if (!blockData_section?.["a"]) {
+        errors.push(`[VI.${blockId}] Pertanyaan A`);
+      }
+      if (blockData_section?.["a"] === "1" && !blockData_section?.["b"]) {
+        errors.push(`[VI.${blockId}] Pertanyaan B`);
+      }
+      if (blockData_section?.["a"] === "1" && blockData_section?.["b"] === "1" && !blockData_section?.["c"]) {
+        errors.push(`[VI.${blockId}] Pertanyaan C`);
+      }
+      const showD = blockData_section?.["a"] === "3" || blockData_section?.["b"] === "2" || (blockData_section?.["b"] === "1" && blockData_section?.["c"]);
+      if (showD && !blockData_section?.["d"]) {
+        errors.push(`[VI.${blockId}] Pertanyaan D`);
       }
     });
 
     // Check SectionVII fields (Potensi - blocks 611-613)
     const section7Blocks = ["611", "612", "613"];
     section7Blocks.forEach((blockId) => {
-      if (!blockData["VII"]?.[blockId]?.["a"]) {
-        errors.push(`[VII.${blockId}] Pertanyaan Potensi - Bagian A`);
+      const blockData_section = blockData["VII"]?.[blockId];
+      if (!blockData_section?.["a"]) {
+        errors.push(`[VII.${blockId}] Pertanyaan A`);
+      }
+      if (blockData_section?.["a"] === "1" && !blockData_section?.["b"]) {
+        errors.push(`[VII.${blockId}] Pertanyaan B`);
+      }
+      if (blockData_section?.["a"] === "1" && blockData_section?.["b"] === "1" && !blockData_section?.["c"]) {
+        errors.push(`[VII.${blockId}] Pertanyaan C`);
+      }
+      const showD = blockData_section?.["a"] === "3" || blockData_section?.["b"] === "2" || (blockData_section?.["b"] === "1" && blockData_section?.["c"]);
+      if (showD && !blockData_section?.["d"]) {
+        errors.push(`[VII.${blockId}] Pertanyaan D`);
       }
     });
 
