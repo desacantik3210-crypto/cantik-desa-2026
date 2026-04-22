@@ -16,7 +16,6 @@ async function getAccessToken(sa: any): Promise<string> {
 
   const message = new TextEncoder().encode(`${header}.${claim}`);
 
-  // Import private key
   const pemBody = sa.private_key.replace(/-----BEGIN PRIVATE KEY-----/, '').replace(/-----END PRIVATE KEY-----/, '').replace(/\n/g, '');
   const binaryDer = Uint8Array.from(atob(pemBody), c => c.charCodeAt(0));
   const key = await crypto.subtle.importKey("pkcs8", binaryDer, { name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" }, false, ["sign"]);
@@ -43,22 +42,32 @@ Deno.serve(async (req) => {
     const token = await getAccessToken(sa);
 
     const SPREADSHEET_ID = "1TTgYNAgy2TXxmz_zz18iDX9h51xBGXkBy6_6EIV39S8";
-    const metaResp = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}?includeGridData=false`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    const meta = await metaResp.json();
+    const SHEET_NAME = "Sheet1";
 
-    const results = [];
-    for (const sheet of meta.sheets || []) {
-      const title = sheet.properties.title;
-      const valResp = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${encodeURIComponent(title)}!1:1`, {
-        headers: { Authorization: `Bearer ${token}` },
+    // Get all values from Sheet1
+    const valResp = await fetch(
+      `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${encodeURIComponent(SHEET_NAME)}`,
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    const vals = await valResp.json();
+    const values: string[][] = vals.values || [];
+
+    if (values.length === 0) {
+      return new Response(JSON.stringify({ headers: [], records: [] }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
-      const vals = await valResp.json();
-      results.push({ sheet: title, headers: vals.values?.[0] || [] });
     }
 
-    return new Response(JSON.stringify(results, null, 2), {
+    const headers = values[0];
+    const records = values.slice(1).map((row) => {
+      const record: Record<string, string> = {};
+      headers.forEach((h, i) => {
+        record[h] = row[i] || "";
+      });
+      return record;
+    });
+
+    return new Response(JSON.stringify({ headers, records }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   } catch (error: unknown) {
